@@ -86,7 +86,7 @@ export default function Register() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Kayıt sırasında bir hata oluştu");
+        throw new Error(data[0].message || "Kayıt sırasında bir hata oluştu");
       }
 
       router.push("/auth/signin");
