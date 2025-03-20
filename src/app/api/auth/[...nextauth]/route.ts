@@ -54,7 +54,6 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Şifre yanlış');
         }
 
-
         return {
           // @ts-ignore
           id: user._id.toString(),
