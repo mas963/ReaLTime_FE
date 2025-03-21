@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronsDown, Github, Menu } from "lucide-react";
+import { ChevronsDown, LogIn, LogInIcon, Menu } from "lucide-react";
 import React, { useState } from "react";
 import {
   Sheet,
@@ -190,13 +190,13 @@ export const Navbar = () => {
       <div className="hidden lg:flex">
         <ModeToggle />
 
-        <Button asChild size="sm" variant="ghost" aria-label="View on GitHub">
+        <Button asChild size="sm" variant="outline" aria-label="View on GitHub" className="ml-2 h-9">
           <Link
             aria-label="View on GitHub"
             href="https://github.com/nobruf/shadcn-landing-page.git"
             target="_blank"
           >
-            <Github className="size-5" />
+            <LogInIcon className="size-5" /> Login
           </Link>
         </Button>
       </div>

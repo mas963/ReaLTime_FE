@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export const MobileSample = () => {
   return (
-    <section id="benefits" className="@container py-2 sm:py-2 px-4 lg:px-0 lg:max-w-screen-xl mx-auto">
+    <section id="benefits" className="@container px-4 lg:px-0 lg:max-w-screen-xl mx-auto">
       <div className="grid lg:grid-cols-2 place-items-center lg:gap-24">
         <div>
           <h2 className="text-lg text-primary mb-2 tracking-wider">Mobile</h2>

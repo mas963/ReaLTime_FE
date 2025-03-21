@@ -1,3 +1,4 @@
+import { CreateProfileSection } from "@/components/landingPage/layout/sections/createProfile";
 import { FAQSection } from "@/components/landingPage/layout/sections/faq";
 import { FooterSection } from "@/components/landingPage/layout/sections/footer";
 import { HeroSection } from "@/components/landingPage/layout/sections/hero";
@@ -33,6 +34,7 @@ export default function Home() {
   return (
     <>
       <HeroSection />
+      <CreateProfileSection />
       <MobileSample />
       <PricintSection />
       <FAQSection />
