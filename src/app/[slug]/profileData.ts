@@ -1,6 +1,4 @@
-import { date } from "zod";
-
-export function getProfileData(username: string) {
+export async function getProfileData(username: string) {
   const users = {
     "yasarcan": {
       name: "Yasar Can",
@@ -8,22 +6,25 @@ export function getProfileData(username: string) {
       avatar: "/profilePhoto.png",
       notifications: [
         {
+          id: 1,
           title: "New youtube video",
-          contect: "new youtube view release!",
+          description: "new youtube view release!",
           link: "https://youtube.com",
-          date: "2023-09-19"
+          date: "2025-03-24 15:12"
         },
         {
+          id: 2,
           title: "New youtube video2",
-          contect: "new youtube view release2!",
+          description: "new youtube view release2!",
           link: "https://youtube2.com",
-          date: "2023-09-19"
+          date: "2025-03-23 20:24"
         },
         {
+          id: 3,
           title: "New youtube video2",
-          contect: "new youtube view release2!",
+          description: "new youtube view release2!",
           link: "",
-          date: "2023-09-19"
+          date: "2025-03-22 13:54"
         },
       ],
     },
