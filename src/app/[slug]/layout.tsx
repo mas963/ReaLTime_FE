@@ -1,12 +1,18 @@
-export const metadata = {
-  title: "ReaLTime",
-  description: "Receive notifications in ReaLTime",
-};
+import { getThemeById } from "@/lib/themes";
 
-export default function ProfileLayout({ children }: { children: React.ReactNode }) {
+export default function ProfileLayout({
+  children,
+  theme
+}: {
+  children: React.ReactNode;
+  theme: string
+}) {
+  const themeData = getThemeById(theme);
+
   return (
     <html lang="tr">
-      <body className="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
+      <body className="min-h-screen flex flex-col items-center
+      justify-center">
         {children}
       </body>
     </html>

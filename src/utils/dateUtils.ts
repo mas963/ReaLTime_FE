@@ -20,13 +20,13 @@ export const formatRelativeDate = (dateString: string): string => {
   if (diffMinutes < 1) {
     return "Now";
   } else if (diffMinutes < 60) {
-    return `${diffMinutes} min ago`;
+    return `${diffMinutes}m ago`;
   } else if (diffHours < 24 && isToday) {
-    return `${diffHours} hours ago`;
+    return `${diffHours}h ago`;
   } else if (isYesterday) {
     return "Yesterday";
   } else if (diffDays <= 7) {
-    return `${diffDays} days ago`;
+    return `${diffDays}d ago`;
   } else {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
