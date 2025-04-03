@@ -3,36 +3,12 @@ import { getProfileData } from "./profileData";
 import NotificationCard from "@/components/profile/NotificationCard";
 import { Bell, Ellipsis } from "lucide-react";
 import { notFound } from "next/navigation";
-import { cache } from "react";
-import { Metadata } from "next";
 import { getThemeById } from "@/lib/themes";
 
-type Props = {
-  params: { slug: string };
-};
-
-const fetchPost = cache(async (slug: string) => {
-  return await getProfileData(slug);
-});
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const profile = await fetchPost(params.slug);
-
-  return {
-    title: profile.name,
-    description: profile.name,
-    openGraph: {
-      title: profile.name,
-      description: profile.name,
-      images: profile.avatar ? [{ url: profile.avatar, width: 1200, height: 630 }] : [],
-    },
-  };
-}
-
 export default async function UserPage({ params }: { params: { slug: string } }) {
-  const profile = await fetchPost(params.slug);
+  const profile = getProfileData(params.slug);
   const theme = getThemeById(profile.theme);
-
+  
   console.log("theme:::", theme);
 
   if (!profile) {
