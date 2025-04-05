@@ -19,10 +19,10 @@ export function MainNav({
         Overview
       </Link>
       <Link
-        href="/dashboard/customers"
+        href="/dashboard/customize"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Customers
+        Customize
       </Link>
       <Link
         href="/dashboard/products"

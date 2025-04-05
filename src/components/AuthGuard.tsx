@@ -13,7 +13,7 @@ interface AuthGuardProps {
 export function AuthGuard({
   children,
   requiredRole = null,
-  fallback = <div className="flex justify-center items-center min-h-screen">Yükleniyor...</div>
+  fallback = <div className="flex justify-center items-center min-h-screen">Loading...</div>
 }: AuthGuardProps) {
   const { isLoading, isAuthenticated, hasRequiredRole } = useAuth({
     requiredRole,

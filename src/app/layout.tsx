@@ -1,4 +1,6 @@
+import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";
+import { NextAuthProvider } from "@/providers/NextAuthProvider";
 
 export default function RootLayout({
   children,
@@ -7,8 +9,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr" suppressHydrationWarning>
-      <head />
-      <body>{children}</body>
-    </html>
+
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+        >
+          <NextAuthProvider>
+            {children}
+          </NextAuthProvider>
+        </ThemeProvider >
+      </body>
+    </html >
   );
 }
