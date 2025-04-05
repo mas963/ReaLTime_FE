@@ -88,7 +88,7 @@ export default function Signin() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Giriş Yap</CardTitle>
@@ -99,8 +99,8 @@ export default function Signin() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {serverError && (
-              <Alert variant="destructive">
-                <AlertDescription>{serverError}</AlertDescription>
+              <Alert>
+                <AlertDescription className="text-red-500">{serverError}</AlertDescription>
               </Alert>
             )}
 
