@@ -4,7 +4,7 @@ export function getProfileData(username: string) {
       name: "Yasar Can",
       bio: "hello world",
       avatar: "/profilePhoto.png",
-      theme: "theme4",
+      theme: "theme3",
       notifications: [
         {
           id: 1,

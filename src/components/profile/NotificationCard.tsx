@@ -11,6 +11,7 @@ interface NotificationProps {
     background: string;
     iconBackground: string;
     text: string;
+    iconColor?: string;
   };
 }
 
@@ -25,7 +26,7 @@ export default function NotificationCard({
       <div className="flex items-center gap-4">
         <div className={`${theme.iconBackground} p-2 rounded-lg`}>
           <span className="text-xl font-semibold">
-            <IconComponent className="w-6 h-6" />
+            <IconComponent className={`w-6 h-6 ${theme.iconColor}`} />
           </span>
         </div>
         <div>
