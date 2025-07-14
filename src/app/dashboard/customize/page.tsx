@@ -1,27 +1,29 @@
 "use client"
 
+import SocialMediaDialogs from "@/components/dashboard/SocialMediaDialogs";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Facebook, Linkedin, MessageCircleHeart, Twitch, Twitter } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Facebook, Linkedin, MessageCircleHeart, Twitch, Twitter } from "lucide-react";
 import Image from "next/image";
-import { useRef, useState } from "react";
-
-const socialMedias = [
-  { name: "Instagram" },
-  { name: "Twitter" },
-  { name: "Linkedin" },
-  { name: "Github" }
-];
+import { useEffect, useRef, useState } from "react";
 
 export default function CustomizePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string>("/profilePhoto.png");
   const [uploading, setUploading] = useState<boolean>(false);
   const [theme, setTheme] = useState<string>("theme1");
+  const [selectedSocialMedia, setSelectedSocialMedia] = useState<string | null>(null);
+  const [socialMediaUrl, setSocialMediaUrl] = useState<string>("");
+  const [userSocialLinks, setUserSocialLinks] = useState<{ platform: string, url: string }[]>([]);
+  const [socialMediaDialogOpen, setSocialMediaDialogOpen] = useState<boolean>(false);
+  const [urlDialogOpen, setUrlDialogOpen] = useState<boolean>(false);
+  const [isUpdatingSocialLinks, setIsUpdatingSocialLinks] = useState<boolean>(false);
+
+  useEffect(() => {
+    // TODO: fetch customize data
+  }, [])
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
@@ -36,27 +38,101 @@ export default function CustomizePage() {
       }
       reader.readAsDataURL(file);
 
-      const formData = new FormData();
-      formData.append("file", file);
+      // try {
+      //   setUploading(true);
+      //   const photoUrl = await uploadProfilePhoto(file);
 
-      try {
-        setUploading(true);
-        const res = await fetch("/api/upload-photo", {
-          method: "POST",
-          body: formData
-        });
+      //   if (photoUrl) {
+      //     setPreviewImage(photoUrl);
+      //   }
+      // } catch (error) {
+      //   console.error("Error uploading photo:", error);
+      // } finally {
+      //   setUploading(false);
+      // }
+    }
+  }
 
-        if (!res.ok) {
-          throw new Error("Failed to upload photo");
-        }
+  const handleSocialMediaSelect = (platform: string) => {
+    setSelectedSocialMedia(platform);
+    setSocialMediaDialogOpen(false);
 
-        const data = await res.json();
-        console.log("Photo uploaded successfully:", data);
-      } catch (error) {
-        console.error("Error uploading photo:", error);
-      } finally {
-        setUploading(false);
-      }
+    setTimeout(() => {
+      setUrlDialogOpen(true);
+    }, 100);
+  }
+
+  const handleSocialMediaUrlSubmit = async () => {
+    if (selectedSocialMedia && socialMediaUrl) {
+      const newLinks = [...userSocialLinks, {
+        platform: selectedSocialMedia,
+        url: socialMediaUrl
+      }];
+
+      setUserSocialLinks(newLinks);
+      setSocialMediaUrl("");
+      setUrlDialogOpen(false);
+
+      setIsUpdatingSocialLinks(true);
+      // await updateSocialLinks(newLinks);
+      setIsUpdatingSocialLinks(false);
+    }
+  }
+
+  const moveUp = async (index: number) => {
+    if (index === 0) return; // Already at the top
+
+    const newLinks = [...userSocialLinks];
+    const temp = newLinks[index];
+    newLinks[index] = newLinks[index - 1];
+    newLinks[index - 1] = temp;
+
+    setUserSocialLinks(newLinks);
+
+    // Update the links on the server
+    setIsUpdatingSocialLinks(true);
+    // await updateSocialLinks(newLinks);
+    setIsUpdatingSocialLinks(false);
+  }
+
+  const moveDown = async (index: number) => {
+    if (index === userSocialLinks.length - 1) return; // Already at the bottom
+
+    const newLinks = [...userSocialLinks];
+    const temp = newLinks[index];
+    newLinks[index] = newLinks[index + 1];
+    newLinks[index + 1] = temp;
+
+    setUserSocialLinks(newLinks);
+
+    // Update the links on the server
+    setIsUpdatingSocialLinks(true);
+    // await updateSocialLinks(newLinks);
+    setIsUpdatingSocialLinks(false);
+  }
+
+  const handleDeleteSocialLink = async (index: number) => {
+    const newLinks = userSocialLinks.filter((_, i) => i !== index);
+    setUserSocialLinks(newLinks);
+
+    // Update the links on the server
+    setIsUpdatingSocialLinks(true);
+    // await updateSocialLinks(newLinks);
+    setIsUpdatingSocialLinks(false);
+  }
+
+  const getSocialIcon = (platform: string) => {
+    switch (platform) {
+      case "Facebook":
+        return <Facebook className="mr-2" />;
+      case "X":
+        return <Twitter className="mr-2" />;
+      case "Linkedin":
+        return <Linkedin className="mr-2" />;
+      case "Twitch":
+        return <Twitch className="mr-2" />;
+      default:
+        return <MessageCircleHeart className="mr-2" />;
     }
   }
 
@@ -80,7 +156,7 @@ export default function CustomizePage() {
               />
               <div
                 onClick={handleImageClick}
-                className="absolute inset-0 bg-black/50 rounded-full flex items-center items-center
+                className="absolute inset-0 bg-black/50 rounded-full flex items-center
                 justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 
                 cursor-pointer"
               >
@@ -103,46 +179,85 @@ export default function CustomizePage() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="bio">Bio</Label>
-            <Textarea
-              id="bio"
-              placeholder="You can enter a biography about yourself"
-              className="resize-none"
-            />
+            <div className="flex">
+              <Textarea
+                id="bio"
+                placeholder="You can enter a biography about yourself"
+                className="resize-none rounded-none rounded-l-lg"
+              />
+              <Button
+                className="h-full rounded-none rounded-r-lg cursor-pointer">
+                <Check />
+              </Button>
+            </div>
           </div>
           <div className="my-4 grid gap-2">
             <Label>Social Media Links</Label>
 
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="cursor-pointer"
-                >
-                  <MessageCircleHeart /> Add
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Add social media links</DialogTitle>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid gap-2">
-                    <Button variant="outline" className="cursor-pointer">
-                      <Facebook /> Facebook
-                    </Button>
-                    <Button variant="outline" className="cursor-pointer">
-                      <Twitter /> X
-                    </Button>
-                    <Button variant="outline" className="cursor-pointer">
-                      <Linkedin /> Linkedin
-                    </Button>
-                    <Button variant="outline" className="cursor-pointer">
-                      <Twitch /> Twitch
-                    </Button>
+            {/* display users's added social links */}
+            {userSocialLinks.length > 0 && (
+              <div className="grid gap-2 mb-3">
+                {userSocialLinks.map((link, index) => (
+                  <div key={index} className="flex items-center border pr-2 rounded">
+                    <div className="gap grid-rows-2 gap-0 mr-2">
+                      <div
+                        onClick={() => moveUp(index)}
+                        aria-label="Move up"
+                        className="hover:bg-gray-500 cursor-pointer">
+                        <ChevronUp />
+                      </div>
+                      <div
+                        onClick={() => moveDown(index)}
+                        aria-label="Move down"
+                        className="hover:bg-gray-500 cursor-pointer">
+                        <ChevronDown />
+                      </div>
+                    </div>
+                    <div className="flex">
+                      {getSocialIcon(link.platform)}
+                      <span>{link.platform}</span>
+                    </div>
+                    <div className="flex items-center gap-2 ml-auto">
+                      <span className="text-sm text-muted-foreground truncate max-w-[150px]">
+                        {link.url}
+                      </span>
+                      <Button
+                        variant="ghost"
+                        className="cursor-pointer"
+                        size="sm"
+                        onClick={() => handleDeleteSocialLink(index)}
+                        disabled={isUpdatingSocialLinks}
+                      >
+                        X
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </DialogContent>
-            </Dialog>
+                ))}
+              </div>
+            )}
+
+            <Button
+              variant="outline"
+              className="cursor-pointer"
+              onClick={() => setSocialMediaDialogOpen(true)}
+              disabled={isUpdatingSocialLinks}
+            >
+              <MessageCircleHeart className="mr-2" />
+              Add Social Media Link
+            </Button>
+
+            <SocialMediaDialogs
+              socialMediaDialogOpen={socialMediaDialogOpen}
+              setSocialMediaDialogOpen={setSocialMediaDialogOpen}
+              urlDialogOpen={urlDialogOpen}
+              setUrlDialogOpen={setUrlDialogOpen}
+              selectedSocialMedia={selectedSocialMedia}
+              setSelectedSocialMedia={setSelectedSocialMedia}
+              socialMediaUrl={socialMediaUrl}
+              setSocialMediaUrl={setSocialMediaUrl}
+              handleSocialMediaSelect={handleSocialMediaSelect}
+              handleSocialMediaUrlSubmit={handleSocialMediaUrlSubmit}
+            />
           </div>
           <div className="grid gap-2 my-4">
             <Label>Themes</Label>

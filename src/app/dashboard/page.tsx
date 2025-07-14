@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { BellRing, PlusSquare } from "lucide-react";
+import { Bell, BellPlus, BellRing, PlusSquare } from "lucide-react";
 import NotificationCard from "@/components/profile/NotificationCard";
 import { useState } from "react";
 
@@ -69,7 +69,7 @@ export default function DashboardPage() {
                 className="w-[300px] h-[50px] cursor-pointer text-xl"
                 onClick={() => setIsFormVisible(true)}
               >
-                <PlusSquare className="w-8 h-8" />
+                <BellPlus />
                 Publish Notification
               </Button>
             </div>
@@ -123,6 +123,7 @@ export default function DashboardPage() {
               background: "bg-card",
               iconBackground: "bg-primary",
               text: "text-primary",
+              iconColor: "text-white",
             }}
           />
           <NotificationCard
@@ -135,6 +136,7 @@ export default function DashboardPage() {
               background: "bg-card",
               iconBackground: "bg-primary",
               text: "text-primary",
+              iconColor: "text-white",
             }}
           />
           <NotificationCard
@@ -146,6 +148,7 @@ export default function DashboardPage() {
               background: "bg-card",
               iconBackground: "bg-primary",
               text: "text-primary",
+              iconColor: "text-white",
             }}
           />
         </div>
